@@ -1,0 +1,52 @@
+class MyQueue {
+    Stack<Integer> stack1, stack2;
+    int peek = 0;
+    public MyQueue() {
+        stack1 = new Stack<>();
+        stack2 = new Stack<>();
+    }
+    
+    public void push(int x) {
+        // push the current element to stack1
+        stack1.push(x);
+
+        if(stack1.size() == 1){
+            peek = stack1.peek();
+        }
+    }
+    
+    public int pop() {
+        // take all element from stack1 to stack2
+        while(!stack1.isEmpty()){
+            stack2.push(stack1.pop());
+        }
+
+        int top = stack2.pop();
+        if(stack2.size() > 0)
+            peek = stack2.peek();
+
+        // take all the elements from stack2 to stack1
+        while(!stack2.isEmpty()){
+            stack1.push(stack2.pop());
+        }
+
+        return top;
+    }
+    
+    public int peek() {
+        return peek;
+    }
+    
+    public boolean empty() {
+        return stack1.isEmpty();
+    }
+}
+
+/**
+ * Your MyQueue object will be instantiated and called as such:
+ * MyQueue obj = new MyQueue();
+ * obj.push(x);
+ * int param_2 = obj.pop();
+ * int param_3 = obj.peek();
+ * boolean param_4 = obj.empty();
+ */
