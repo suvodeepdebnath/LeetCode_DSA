@@ -1,0 +1,52 @@
+class Solution {
+    public boolean isShippingPossible(int[] weights, int days, int currentCapacity){
+        int requiredDays = 1;
+        int currentWeight = 0;
+        
+        for(int index = 0;index < weights.length;index++){
+            if(weights[index] > currentCapacity){
+                return false;
+            }
+            
+            if(currentWeight + weights[index] > currentCapacity){
+                requiredDays++;
+                currentWeight = 0;
+                
+                if(requiredDays > days){
+                    return false;
+                }
+            }
+            
+            currentWeight += weights[index];
+        }
+        
+        return true;
+    }
+    public int shipWithinDays(int[] weights, int days) {
+        if(weights == null || weights.length == 0){
+            return 0;
+        }
+        int low = weights[0];
+        int high = 0;
+        int minimumCapacity = Integer.MAX_VALUE;
+        // get low and high
+        for(int index = 0;index < weights.length;index++){
+            low = Math.min(low, weights[index]);
+            high += weights[index];
+        }
+        
+        // search between low and high
+        while(low <= high){
+            int currentCapacity = low + (high - low) / 2;
+            
+            if(isShippingPossible(weights, days, currentCapacity)){
+                minimumCapacity = currentCapacity;
+                high = currentCapacity - 1;
+            }else{
+                low = currentCapacity + 1;
+            }
+        }
+        
+        return minimumCapacity;
+    }
+}
