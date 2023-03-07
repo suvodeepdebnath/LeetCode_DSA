@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int findKthPositive(vector<int>& arr, int k) {
+        // possible missing numbers is 0 or arr.length
+        int low = 0, high = arr.size();
+
+        // get the range where the kth missing positive number lies
+        while(low < high){
+            int mid = low + (high - low) / 2;
+
+            if(arr[mid] - (mid + 1) < k){
+                low = mid + 1;
+            }else{
+                high = mid;
+            }
+        }
+        // kth missing positive number
+        return low + k;
+    }
+};
