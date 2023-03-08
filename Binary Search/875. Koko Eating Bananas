@@ -1,0 +1,44 @@
+class Solution {
+public:
+    bool isEatingPossible(vector<int> piles, int bananas, int h){
+        int index = 0;
+        int countHours = 0;
+
+        // iterate over the piles
+        for(int index = 0;index < piles.size();index++){
+            // count hours to finish the current pile
+            countHours += (piles[index] / bananas);
+            if(piles[index] % bananas != 0){
+                countHours++;
+            }
+
+            if(countHours > h){
+                return false;
+            }
+        }
+
+        return true;
+    }
+    int minEatingSpeed(vector<int>& piles, int h) {
+        // initialization
+        long long low = 1, high = 0;
+
+        // get the maximum no. of bananas
+        for(int pile : piles){
+            high += pile;
+        }
+
+        // get the minimum banana to finish all in h hours
+        while(low < high){
+            long long mid = low + (high - low) / 2;
+
+            if(isEatingPossible(piles, mid, h)){
+                high = mid;
+            }else{
+                low = mid + 1;
+            }
+        }
+
+        return (int)low;
+    }
+};
