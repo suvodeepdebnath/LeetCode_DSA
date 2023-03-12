@@ -1,0 +1,25 @@
+class Solution {
+public:
+    // check whether the character is vowel or not
+    bool isVowel(char ch){
+        return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';
+    }
+    // function to check whether first and last char is vowel
+    bool isVowelString(string word){
+        return isVowel(word[0]) && isVowel(word[word.size() - 1]);
+    }
+    // function to get count of vowel strings
+    int vowelStrings(vector<string>& words, int left, int right) {
+        // initialization
+        int count = 0;
+        // iterate over the strings ffrom the words
+        for(int i = left;i <= right;i++){
+            // when the current string is vowel string
+            if(isVowelString(words[i])){
+                count++;
+            }
+        }
+        
+        return count;
+    }
+};
