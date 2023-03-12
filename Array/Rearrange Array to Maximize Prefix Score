@@ -1,0 +1,25 @@
+class Solution {
+    public int maxScore(int[] nums) {
+        long count = 0;
+        long prefixSum = 0;
+        
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>();
+        
+        for(int num : nums){
+            maxHeap.offer(-num);
+        }
+        
+        while(!maxHeap.isEmpty()){
+            int curr = -(maxHeap.remove());
+            prefixSum += curr;
+            
+            if(prefixSum <= 0){
+                break;
+            }
+            
+            count++;
+        }
+        
+        return (int)count;
+    }
+}
