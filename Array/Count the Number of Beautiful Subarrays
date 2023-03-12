@@ -1,0 +1,15 @@
+class Solution {
+    public long beautifulSubarrays(int[] nums) {
+        long count = 0;
+        Map<Integer, Integer> seen = new HashMap<>();
+        seen.put(0, 1);
+        int xor = 0;
+        // iterate over the nums
+        for(int i = 0;i < nums.length;i++){
+            xor ^= nums[i];
+            count += seen.getOrDefault(xor, 0);
+            seen.put(xor, seen.getOrDefault(xor, 0) + 1);
+        }
+        return count;
+    }
+}
