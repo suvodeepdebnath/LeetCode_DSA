@@ -1,0 +1,47 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+    struct compareNode{
+        bool operator()(const ListNode* node1, const ListNode* node2){
+            return node1->val > node2->val;
+        }
+    };
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        // initialization
+        ListNode* listNode = new ListNode();
+        ListNode* dummy = listNode;
+        priority_queue<ListNode*, vector<ListNode*>, compareNode> priorityQueue;
+
+        // insert all the elements into the lists
+        for(ListNode* list : lists){
+            if(list){
+                priorityQueue.push(list);
+            }
+        }
+    
+        // remove list having min value
+        // again push the list next node till the pq is empty 
+        while(!priorityQueue.empty()){
+            ListNode* curr = priorityQueue.top();
+            priorityQueue.pop();
+
+            dummy->next = new ListNode(curr->val);
+            dummy = dummy->next;
+
+            if(curr->next){
+                priorityQueue.push(curr->next);
+            }
+        }
+
+        return listNode->next;
+    }
+};
