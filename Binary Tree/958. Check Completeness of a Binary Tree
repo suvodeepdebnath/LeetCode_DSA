@@ -1,0 +1,57 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool isCompleteTree(TreeNode* root) {
+        // edge case
+        if(root == NULL){
+            return true;
+        }
+        
+        // initialization
+        queue<TreeNode*> q;
+        q.push(root);
+        bool isNullFound = false;
+        
+        // traverse the tree
+        while(!q.empty()){
+            int size = q.size();
+            
+            // visit the nodes in the current level
+            for(int i = 0;i < size;i++){
+                TreeNode* curr = q.front();
+                q.pop();
+                
+                // when left node is null
+                if(curr->left == NULL){
+                    isNullFound = true;
+                }else if(isNullFound){
+                    return false;
+                }else{
+                    q.push(curr->left);
+                }
+                
+                // when right node is null
+                if(curr->right == NULL){
+                    isNullFound = true;
+                }else if(isNullFound){
+                    return false;
+                }else{
+                    q.push(curr->right);
+                }
+                
+            }
+        }
+        // when it never returns false
+        return true;
+    }
+};
