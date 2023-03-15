@@ -1,0 +1,38 @@
+class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+        initialization
+        List<Integer> spiralOrder = new ArrayList<Integer>();
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int left = 0, right = matrix[0].length - 1;
+        int top = 0, bottom = matrix.length - 1;
+        
+        // till we have elements to include
+        while(spiralOrder.size() < m * n){
+            // visit the top row from left to right
+            for(int i = left;i <= right && spiralOrder.size() < m * n;i++){
+                spiralOrder.add(matrix[top][i]);
+            }
+            top++;
+            
+            // visit the right most column from top to bottom
+            for(int i = top;i <= bottom && spiralOrder.size() < m * n;i++){
+                spiralOrder.add(matrix[i][right]);
+            }
+            right--;
+            
+            // visit the bottom row from right to left
+            for(int i = right;i >= left && spiralOrder.size() < m * n;i--){
+                spiralOrder.add(matrix[bottom][i]);
+            }
+            bottom--;
+            // visit the left most column from bottom to top
+            for(int i = bottom;i >= top && spiralOrder.size() < m * n;i--){
+                spiralOrder.add(matrix[i][left]);
+            }
+            left++;
+        }
+        
+        return spiralOrder;
+    }
+}
