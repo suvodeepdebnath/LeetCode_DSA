@@ -1,0 +1,70 @@
+// defination of trie node
+class TrieNode{
+public:
+    // as there are 26 posible chars 
+    TrieNode* child[26];
+    bool isEndOfWord;
+    
+    // constructor
+    TrieNode(){
+        isEndOfWord = false;
+        for(int i = 0;i < 26;i++)
+            child[i] = NULL;
+    }
+};
+
+class Trie {
+private:
+    // initialization of the root
+    TrieNode* root;
+public:
+    Trie() {
+        root = new TrieNode();
+    }
+    // insert the word into the trie
+    void insert(string word) {
+        TrieNode* dummy = root;
+        for(char ch : word){
+            if(dummy->child[ch - 'a'] == NULL){
+                dummy->child[ch - 'a'] = new TrieNode();
+            }
+            
+            dummy = dummy->child[ch - 'a'];
+        }
+        dummy->isEndOfWord = true;
+    }
+    // search the word into the trie
+    bool search(string word) {
+        TrieNode* dummy = root;
+        
+        for(char ch : word){
+            if(dummy->child[ch - 'a'] == NULL){
+                return false;
+            }
+            dummy = dummy->child[ch - 'a'];
+        }
+        return dummy->isEndOfWord;
+    }
+    // search the prefix into the trie
+    bool startsWith(string prefix) {
+        TrieNode* dummy = root;
+        
+        for(char ch : prefix){
+            if(dummy->child[ch - 'a'] == NULL){
+                return false;
+            }
+            
+            dummy = dummy->child[ch - 'a'];
+        }
+        
+        return true;
+    }
+};
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie* obj = new Trie();
+ * obj->insert(word);
+ * bool param_2 = obj->search(word);
+ * bool param_3 = obj->startsWith(prefix);
+ */
