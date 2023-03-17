@@ -1,0 +1,46 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        // initialization
+        int rootIdx = postorder.size() - 1;
+        unordered_map<int, int> indices;
+        
+        // get the inorder value and index mapping
+        for(int index = 0;index < inorder.size();index++){
+            indices[inorder[index]] = index; 
+        }
+        // get the binary tree
+        return buildTree(inorder, postorder, 0, inorder.size() - 1, rootIdx, indices);
+    }
+    
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder, int left, int right, int& rootIdx, unordered_map<int, int>& indices){
+        // edge cases: when there is no element
+        if(left > right){
+            return nullptr;
+        }
+        // get the value of root index
+        int pivot = indices[postorder[rootIdx]];
+        // create the root of the current tree
+        TreeNode* root = new TreeNode(postorder[rootIdx]);
+        // the next root node is going to be the previous node in the postorder
+        rootIdx--;
+        
+        // get the right subtree
+        root->right = buildTree(inorder, postorder, pivot + 1, right, rootIdx, indices);
+        // get the left subtree
+        root->left = buildTree(inorder, postorder, left, pivot - 1 , rootIdx, indices);
+        // return the root
+        return root;
+    }
+};
