@@ -1,0 +1,41 @@
+class BrowserHistory {
+    vector<string> urls;
+    int index = 0;
+
+    int getMin(int a, int b){   return a < b? a : b; }
+    int getMax(int a, int b){   return a < b? b : a; }
+public:
+    BrowserHistory(string homepage) {
+        index = 0;
+        urls.push_back(homepage);
+    }
+    
+    void visit(string url) {
+        // clear the forwards history
+        urls.erase(urls.begin() + index + 1, urls.end());
+        // insert current forward url
+        urls.push_back(url);
+        // update the index
+        index = urls.size() - 1;
+    }
+    
+    string back(int steps) {
+        // update the index
+        index = getMax(0, index - steps);
+        return urls[index];
+    }
+    
+    string forward(int steps) {
+        // update the index
+        index = getMin(urls.size() - 1, index + steps);
+        return urls[index];
+    }
+};
+
+/**
+ * Your BrowserHistory object will be instantiated and called as such:
+ * BrowserHistory* obj = new BrowserHistory(homepage);
+ * obj->visit(url);
+ * string param_2 = obj->back(steps);
+ * string param_3 = obj->forward(steps);
+ */
