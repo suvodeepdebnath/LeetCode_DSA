@@ -1,0 +1,119 @@
+// c++ program
+class TrieNode{
+    public:
+    TrieNode* children[26];
+    bool isEndOfWord;
+
+    TrieNode(){
+        for(int i = 0;i < 26;i++){
+            children[i] = NULL;
+        }
+        isEndOfWord = false;
+    }
+};
+class WordDictionary {
+    TrieNode* root;
+public:
+    WordDictionary() {
+        root = new TrieNode();
+    }
+    
+    void addWord(string word) {
+        TrieNode* dummy = root;
+
+        for(char ch : word){
+            int curr_index = ch - 'a';
+            if(dummy->children[curr_index] == NULL){
+                dummy->children[curr_index] = new TrieNode();
+            }
+            dummy = dummy->children[curr_index];
+        }
+        dummy->isEndOfWord = true;
+    }
+    
+    bool search(string word) {
+        return search(word, 0, root);
+    }
+    bool search(string word, int index, TrieNode *node){
+        // edge case
+        if(index >= word.size()){
+            return node->isEndOfWord;
+        }
+        // when current char is '.'
+        if(word[index] == '.'){
+            bool flag = false;
+            for(int i = 0;i < 26;i++){
+                if(node->children[i] != NULL){
+                    flag = flag || search(word, index + 1, node->children[i]);
+                }
+            }
+            return flag;
+        }
+
+        return node->children[word[index] - 'a'] != NULL && search(word, index + 1, node->children[word[index] - 'a']);
+    }
+};
+ 
+ // java program
+ class WordDictionary {
+    class TrieNode{
+        TrieNode[] children;
+        boolean isEndOfWord;
+        
+        public TrieNode(){
+            children = new TrieNode[26];
+            isEndOfWord = false;
+        }
+    }
+    TrieNode root;
+    public WordDictionary() {
+        root = new TrieNode();
+    }
+    
+    public void addWord(String word) {
+        TrieNode node = root;
+        
+        for(int index = 0;index < word.length();index++){
+            int curr = word.charAt(index) - 'a';
+            
+            if(node.children[curr] == null){
+                node.children[curr] = new TrieNode();
+            }
+            
+            node = node.children[curr];
+        }
+        node.isEndOfWord = true;
+    }
+    
+    public boolean search(String word) {
+        return search(word, 0, root);
+    }
+    public boolean search(String word, int index, TrieNode node){
+        // edge cases
+        if(index >= word.length()){
+            return node.isEndOfWord;
+        }
+        
+        char curr = word.charAt(index);
+        int next = index + 1;
+        if(curr == '.'){
+            TrieNode[] currNodes = node.children;
+            boolean flag = false;
+            for(int i = 0;i < 26;i++){
+                if(currNodes[i] != null){
+                    flag = flag || search(word, next, currNodes[i]);
+                }
+            }
+            
+            return flag;
+        }
+        return node.children[curr - 'a'] != null && search(word, next, node.children[curr - 'a']);
+    }
+}
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary obj = new WordDictionary();
+ * obj.addWord(word);
+ * boolean param_2 = obj.search(word);
+ */
