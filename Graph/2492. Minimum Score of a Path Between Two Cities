@@ -1,0 +1,39 @@
+class Solution {
+private:
+    vector<vector<pair<int, int>>> buildGraph(int n, vector<vector<int>>& roads){
+        vector<vector<pair<int, int>>> graph(n + 1);
+
+        // iterate over the roads
+        for(vector<int> road : roads){
+            graph[road[0]].push_back({road[1], road[2]});
+            graph[road[1]].push_back({road[0], road[2]});
+        }
+
+        return graph;
+    }
+
+    void dfs(int curr, int& minDist, vector<vector<pair<int, int>>>& graph, vector<bool>& visited){
+        visited[curr] = true;
+        // iterate over the adjacency list
+        for(pair<int, int> neigh : graph[curr]){
+            // update the min dist
+            minDist = min(minDist, neigh.second);
+            // visit the neighbour if not yet visited
+            if(!visited[neigh.first]){
+                dfs(neigh.first, minDist, graph, visited);
+            }
+        }
+    }
+public:
+    int minScore(int n, vector<vector<int>>& roads) {
+        // build graph
+        vector<vector<pair<int, int>>> graph = buildGraph(n, roads);
+
+        // initialization
+        vector<bool> visited(n + 1, false);
+        int minDist = INT_MAX;
+        // dfs traversal
+        dfs(1, minDist, graph, visited);
+        return minDist;
+    }
+};
