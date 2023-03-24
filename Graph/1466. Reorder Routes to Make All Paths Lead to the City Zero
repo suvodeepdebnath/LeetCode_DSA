@@ -1,0 +1,55 @@
+class Solution {
+    // build the graph and mark whether the road is incoming or outgoing
+    vector<vector<pair<int, int>>> buildGraph(int n, vector<vector<int>>& connections){
+        vector<vector<pair<int, int>>> graph(n);
+        // mark incoming as +1
+        // mark outgoing as -1
+        for(vector<int> connection : connections){
+            graph[connection[0]].push_back({connection[1], -1});
+            graph[connection[1]].push_back({connection[0], 1});
+        }
+
+        return graph;
+    }
+public:
+    int minReorder(int n, vector<vector<int>>& connections) {
+        // build graph
+        vector<vector<pair<int, int>>> graph = buildGraph(n, connections);
+
+        // initialization
+        int countEdges = 0;
+        vector<bool> visited(n, false);
+        queue<pair<int, int>> q;
+        q.push({0, 0});
+        // starting from city 0, all the path have to be incoming
+        // if the path is outgoing we increse the count
+        // till we visit all cities
+        while(!q.empty()){
+            // get the current city
+            pair<int, int> curr = q.front();
+            q.pop();
+            // visit the neighbours
+            vector<pair<int, int>> neigh = graph[curr.first];
+            int neighSize = neigh.size();
+            for(int j = 0;j < neighSize;j++){
+                pair<int, int> neighNode = neigh[j];
+
+                // when we already visited the current city
+                if(visited[neighNode.first]){
+                    continue;
+                }
+                // when the path is outgoing
+                if(neighNode.second == -1){
+                    countEdges++;
+                }
+                // add the neigh city to the queue
+                q.push(neighNode);
+            }       
+            // mark the current city as visited                      
+            visited[curr.first] = true;
+        }        
+
+        // return the 
+        return countEdges;
+    }
+}; 
