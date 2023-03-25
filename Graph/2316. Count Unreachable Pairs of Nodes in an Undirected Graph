@@ -1,0 +1,56 @@
+class Solution {
+public:
+    vector<vector<int>> buildGraph(int n, vector<vector<int>>& connections){
+        vector<vector<int>> graph(n);
+
+        for(vector<int> connection : connections){
+            graph[connection[0]].push_back(connection[1]);
+            graph[connection[1]].push_back(connection[0]);
+        }
+
+        return graph;
+    }
+    int dfs(int node, vector<vector<int>>&  graph, vector<bool>& visited){
+        if(visited[node]){
+            return 0;
+        }
+
+        // visit the node
+        visited[node] = true;
+        int countNodes = 1;
+        for(int neigh : graph[node]){
+            countNodes += dfs(neigh, graph, visited); 
+        }
+
+        return countNodes;
+    }
+    long long countPairs(int n, vector<vector<int>>& edges) {
+        // edge cases
+        if(n == 1){
+            return 0;
+        }
+        if(edges.empty()){  
+            return (long)n * (long)(n - 1) / 2;
+        }
+
+        // initialization
+        vector<vector<int>> graph = buildGraph(n, edges);
+        vector<bool> visited(n, false);
+        long long pairs = 0;
+        int noOfNodesVisited = 0;
+
+        // get the no. of nodes in each connected components
+        // optimization for the curr component, it can make pair 
+        // with all the node visited previously
+        for(int node = 0;node < n;node++){
+            int noOfNodesInCurrentComponent = 0;
+            if(!visited[node]){
+                noOfNodesInCurrentComponent = dfs(node, graph, visited);
+            }
+            pairs += (long)noOfNodesInCurrentComponent * noOfNodesVisited;
+            noOfNodesVisited += noOfNodesInCurrentComponent;
+        }
+
+        return pairs;
+    }
+};
