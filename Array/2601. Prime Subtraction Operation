@@ -1,0 +1,52 @@
+class Solution {
+public:
+    // get the prime numbers
+    void sieve(){
+        // initialization
+        bool isPrime[1001];
+        vector<int> primes;
+
+        fill(isPrime, isPrime + 1001, true);
+        isPrime[0] = isPrime[1] = false;
+        // mark as false which are not prime
+        for(int i = 2;i * i < 1001;i++){
+            if(isPrime[i]){
+                for(int p = i * i;p < 1001;p += i){
+                    isPrime[p] = false;
+                }
+            }
+        }
+        // get the prime numbers in a vector
+        for(int i = 0;i < 1001;i++){
+            if(isPrime[i]){
+                primes.push_back(i);
+            }
+        }
+
+        return primes;
+    }
+    bool primeSubOperation(vector<int>& nums) {
+        // get the prime numbers
+        vector<int> primes = sieve();
+        // get the strictly increasing array 
+        for(int i = 0; i < nums.size(); i += 1) {
+            // get the index of the prime number
+            // which is just smaller or equal to current array element
+            int index = lower_bound(primes.begin(),primes.end(), nums[i]) - primes.begin();
+            
+            // subtract the prime number
+            for(int j = index - 1; j >= 0; j -= 1) {
+                // subtract the prime number from current element
+                // when it the value after subtraction is greater than previous value
+                if(i == 0 || nums[i] - primes[j] > nums[i - 1]) {
+                    nums[i] -= primes[j];
+                    break;
+                }
+            }
+            
+            // when the previous value is greater or equal
+            if(i > 0 && nums[i] <= nums[i - 1]) return false;
+        }
+        return true;
+    }
+};
