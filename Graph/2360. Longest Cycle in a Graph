@@ -1,0 +1,100 @@
+// TC : O(n), SC : O(1)
+class Solution {
+    int maxLength = -1;
+    int repeatedNode = -1;
+public:
+    int dfs(int curr, vector<int>& edges, vector<bool> visited){
+        // when is no outgoing path
+        if(curr == -1){
+            return 0;
+        }
+        // when current is visited
+        if(visited[curr]){
+            repeatedNode = curr;
+            return 1;
+        }
+        // mark the node as visited
+        visited[curr] = true;
+        // visit the neighbour and get the cycle length if any
+        int length = dfs(edges[curr], edges, visited);
+        
+        // when we traverse back to the repeated node
+        if(curr == repeatedNode){
+            maxLength = max(maxLength, length);
+        }
+        // when there is cycle in the graph
+        if(length > 0){
+            length++;
+        }
+        return length;
+    }
+    int longestCycle(vector<int>& edges) {
+        // edge cases
+        if(edges.empty()){
+            return -1;
+        }
+        // initialization
+        int n = edges.size();
+        vector<bool> visited(n, false);
+        // traverse the graph
+        for(int i = 0;i < n;i++){
+            // when there is no outgoing path
+            if(edges[i] == -1){
+                continue;
+            }
+            // when the current node is not visited
+            if(!visited[i]){
+                repeatedNode = -1;
+                dfs(i, edges, visited);
+            }
+        }
+
+        return maxLength;
+    }
+};
+
+// dfs with map data structure
+class Solution {
+    int maxLength = -1;
+public:
+    void dfs(int curr, vector<int>& edges, unordered_map<int, int>& dist, vector<bool>& visited){
+        // mark the node as visited
+        visited[curr] = true;
+        int neigh = edges[curr];
+        // when there is no outgoing edge
+        if(neigh == -1){
+            return;
+        }
+        // when neigh is not visited
+        if (!visited[neigh]) {
+            dist[neigh] = dist[curr] + 1;
+            dfs(neigh, edges, dist, visited);
+        } else if(dist.count(neigh)){
+            maxLength = max(maxLength, dist[curr] - dist[neigh] + 1);
+        }
+    }
+    int longestCycle(vector<int>& edges) {
+        // edge cases
+        if(edges.empty()){
+            return -1;
+        }
+        // initialization
+        int n = edges.size();
+        vector<bool> visited(n, false);
+        // traverse the graph
+        for(int i = 0;i < n;i++){
+            // when there is no outgoing path
+            if(edges[i] == -1){
+                continue;
+            }
+            // when the current node is not visited
+            if(!visited[i]){
+                unordered_map<int, int> dist;
+                dist[i] = 1;
+                dfs(i, edges, dist, visited);
+            }
+        }
+
+        return maxLength;
+    }
+};
