@@ -1,0 +1,42 @@
+// memoizarion
+class Solution {
+public:
+    int mincostTickets(vector<int>& days, vector<int>& costs) {
+        // edge cases
+        if(days.empty() || costs.empty()){
+            return 0;
+        }
+        // initialization
+        int totalDays = 366;
+        vector<bool> daySet(totalDays, false);
+        vector<int> memo(totalDays, -1);
+        // mark as true which are present
+        for(int day : days){
+            daySet[day] = true;
+        }
+
+        return mincostTickets(1, daySet, costs, memo);
+    }
+
+    int mincostTickets(int day, vector<bool>& daySet, vector<int>& costs, vector<int>& memo) {
+        // edge cases
+        if(day > 365){
+            return 0;
+        }
+        // when we already calculated it
+        if(memo[day] != -1){
+            return memo[day];
+        }
+        // initialize
+        int ans = 0;
+        // when the current day is present
+        if(daySet[day]){
+            ans = min(costs[0] + mincostTickets(day + 1, daySet, costs, memo), costs[1] + mincostTickets(day + 7, daySet, costs, memo));
+            ans = min(ans, costs[2] + mincostTickets(day + 30, daySet, costs, memo));
+        }else{
+            ans = mincostTickets(day + 1, daySet, costs, memo);
+        }     
+
+        return memo[day] = ans;
+    }
+};
