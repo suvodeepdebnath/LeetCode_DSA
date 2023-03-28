@@ -40,3 +40,30 @@ public:
         return memo[day] = ans;
     }
 };
+
+// Window Variant
+class Solution {
+public:
+    int mincostTickets(vector<int>& days, vector<int>& costs) {
+        // edge cases
+        if(days.empty() || costs.empty()){
+            return 0;
+        }
+        // initialization
+        int totalDays = 366;
+        vector<int> answer(totalDays, 0);
+        unordered_set<int> daySet(days.begin(), days.end());
+
+        // iterate over the days 
+        for(int day = 1;day < totalDays;day++){
+            // when we need to travel today
+            if(daySet.find(day) != daySet.end()){
+                answer[day] = min(answer[day - 1] + costs[0], min(answer[max(0, day - 7)] + costs[1], answer[max(0, day - 30)] + costs[2]));
+            }else{
+                answer[day] = answer[day - 1];
+            }
+        }
+
+        return answer[365];
+    }
+};
