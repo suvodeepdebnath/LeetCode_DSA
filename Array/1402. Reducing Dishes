@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int maxSatisfaction(vector<int>& satisfaction) {
+        // edge cases
+        if(satisfaction.empty()){
+            return 0;
+        }
+
+        // initialization
+        int n = satisfaction.size();
+        int suffixSum = 0;
+        int _maxSatisfaction = 0;
+        
+        // sort the dish satisfaction
+        sort(satisfaction.begin(), satisfaction.end());
+        
+        // get the maximum satisfaction
+        for(int index = n - 1;index >= 0;index--){
+            suffixSum = suffixSum + satisfaction[index];
+            // when chef is having negetive impact
+            if(suffixSum < 0){
+                break;
+            }
+            _maxSatisfaction += suffixSum;
+        }
+        return _maxSatisfaction;
+    }
+};
