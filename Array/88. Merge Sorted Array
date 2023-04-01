@@ -1,0 +1,32 @@
+class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        // initialization
+        int index1 = 0, index2 = 0, index = 0;
+        int[] nums1_copy = new int[m];
+        
+        // copy the elements
+        for(index = 0;index < m;index++){
+            nums1_copy[index] = nums1[index];
+        }
+        
+        index = 0;
+        // merge the sorted array
+        while(index1 < m && index2 < n){
+            if(nums1_copy[index1] < nums2[index2]){
+                nums1[index++] = nums1_copy[index1++];
+            }else{
+                nums1[index++] = nums2[index2++];
+            }
+        }
+        
+        // copy rest of the elements of nums1_copy if any
+        while(index1 < m){
+            nums1[index++] = nums1_copy[index1++];
+        }
+        
+        // copy rest of the elements of nums2 if any
+        while(index2 < n){
+            nums1[index++] = nums2[index2++];
+        }
+    }
+}
