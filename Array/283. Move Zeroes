@@ -1,0 +1,23 @@
+class Solution {
+public:
+    void moveZeroes(vector<int>& nums) {
+        // edge cases
+        if(nums.empty()){
+            return;
+        }
+
+        // initialization
+        int index = 0;
+
+        // iterate over the nums array
+        for(int i = 0;i < nums.size();i++){
+            // when there is a non zero 
+            // element, bring it to the left
+            if(nums[i]){
+                nums[index] = nums[i];
+                // mark the index as zero if it is not the current index
+                nums[i] = index++ == i? nums[i] : 0;
+            }
+        }
+    }
+};
