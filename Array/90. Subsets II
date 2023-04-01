@@ -1,0 +1,43 @@
+class Solution {
+public:
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        // initialization
+        vector<vector<int>> powerSet;
+        vector<int> currSet;
+        // edge cases
+        if(nums.empty()){
+            powerSet.push_back(currSet);
+            return powerSet;
+        }
+        // sort the input array
+        sort(nums.begin(), nums.end());
+        // generate all the subsets
+        generateSubsets(nums, 0, currSet, powerSet);
+        
+        return powerSet;
+    }
+
+    void generateSubsets(vector<int>& nums, int index, vector<int>& currSet, vector<vector<int>>& powerSet){
+        // edge cases
+        if(index >= nums.size()){
+            powerSet.push_back(currSet);
+            return;
+        }
+
+        // when we are considering the current element
+        currSet.push_back(nums[index]);
+        generateSubsets(nums, index + 1, currSet, powerSet);
+
+        // when we are not considering the current element
+        // skip all the duplicates
+        currSet.pop_back();
+        int i = 0;
+        for(i = index + 1;i < nums.size();i++){
+            if(nums[i] != nums[i - 1]){
+                break;
+            }
+        }
+        index = i;
+        generateSubsets(nums, index, currSet, powerSet);
+    }
+};
