@@ -1,0 +1,44 @@
+class Solution {
+public:
+    int binarySearch(int spell, vector<int>& potions, long long success){
+        int m = potions.size();
+        int low = 0;
+        int high = m - 1;
+        int position = -1;
+
+        // search the potion
+        while(low <= high){
+            int mid = low + (high - low) / 2;
+
+            if((long long)spell * potions[mid] >= success){
+                position = mid;
+                high = mid - 1;
+            }else{
+                low = mid + 1;
+            }
+        }
+
+        return position == -1? 0 : m - position;
+    }
+    vector<int> successfulPairs(vector<int>& spells, vector<int>& potions, long long success) {
+        // initialization
+        int n = spells.size();
+        vector<int> noOfSuccessfulPairs(n, 0);
+
+        // edge cases
+        if(spells.empty()){
+            return noOfSuccessfulPairs;
+        }
+        // sort the potions
+        sort(potions.begin(), potions.end());
+
+        // get the no. of successful pairs for each spells
+        for(int i = 0;i < n;i++){
+
+            // get the  no. of successful pairs for current spell
+            noOfSuccessfulPairs[i] = binarySearch(spells[i], potions, success);
+        }
+
+        return noOfSuccessfulPairs;
+    }
+};
