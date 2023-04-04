@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int partitionString(string s) {
+        // edge cases
+        if(s.empty() || s.size() <= 0){
+            return 0;
+        }
+        int mask = 0;
+        int count = 1;
+        // using bit manipulation
+        for(int i = 0;i < s.size();i++){
+            int currBit = s[i] - 'a';
+            // when the current character is already present 
+            // create the partition from current position
+            if(mask & (1 << currBit)){
+                mask &= (1 << currBit);
+                count++;
+            }else{
+                mask |= 1 << currBit;
+            }
+        }
+
+        return count;
+    }
+};
