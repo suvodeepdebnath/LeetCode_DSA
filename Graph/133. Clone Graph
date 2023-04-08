@@ -1,0 +1,65 @@
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    vector<Node*> neighbors;
+    Node() {
+        val = 0;
+        neighbors = vector<Node*>();
+    }
+    Node(int _val) {
+        val = _val;
+        neighbors = vector<Node*>();
+    }
+    Node(int _val, vector<Node*> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
+    }
+};
+*/
+
+class Solution {
+    Node* clonedGraph = NULL;
+    Node* dummy = NULL;
+public:
+    Node* cloneGraph(Node* node) {
+        // edge cases
+        if(node == NULL){
+            return NULL;
+        }
+        // initialization
+        unordered_map<int, Node*> nodeMap;
+        // add the first node in the map
+        dummy = clonedGraph = new Node(1);
+        nodeMap[1] = clonedGraph;
+        // defining queue  for bfs traversal
+        queue<Node*> q;
+        q.push(node);
+
+        // while there are nodes to visit
+        while(!q.empty()){
+            int size = q.size();
+
+            // visit the current nodes
+            for(int i = 0;i < size;i++){
+                Node* curr = q.front();
+                q.pop();
+                dummy = nodeMap[curr->val];
+                // add all the neighbors of current node in the queue
+                // if they are not yet visited
+                for(Node* currNeigh : curr->neighbors){
+                    // when we found a new node
+                    if(nodeMap.find(currNeigh->val) == nodeMap.end()){
+                        nodeMap[currNeigh->val] = new Node(currNeigh->val);
+                        q.push(currNeigh);
+                    }
+                    // add the current neighbor to the cloned graph
+                    dummy->neighbors.push_back(nodeMap[currNeigh->val]);
+                }
+
+            }
+        }
+        return clonedGraph;
+    }
+};
