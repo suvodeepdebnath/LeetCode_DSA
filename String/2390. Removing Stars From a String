@@ -1,0 +1,60 @@
+// Approach2
+class Solution {
+public:
+    void reverse(string& str){
+        int left = 0;
+        int right = str.size() - 1;
+        
+        while(left < right){
+            char ch = str[left];
+            str[left++] = str[right];
+            str[right--] = ch;
+        }
+        
+    }
+    string removeStars(string s) {
+        // initialize
+        int n = s.size();
+        string result = "";
+        int count = 0;
+        
+        // iterate over the string s from end
+        for(int i = n - 1;i >= 0;i--){
+            if(s[i] == '*'){
+                count++;
+                continue;
+            }
+            
+            if(count > 0){
+                count--;
+                continue;
+            }
+            
+            result += s[i];
+        }
+        reverse(result);
+        return result;
+    }
+};
+
+
+// Approach 2
+class Solution {
+public:
+    string removeStars(string s) {
+        // initialize
+        int n = s.size();
+        string result = "";
+        
+        // iterate over the string s from end
+        for(int i = 0;i < n;i++){
+            if(s[i] == '*'){
+                result.pop_back();
+            }else{            
+                result += s[i];
+            }
+        }
+        
+        return result;
+    }
+};
