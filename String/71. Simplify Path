@@ -1,0 +1,60 @@
+// Java Solution
+class Solution {
+    public String simplifyPath(String path) {
+        // initialization
+        Stack<String> stack = new Stack();
+        
+        // for each token
+        for(String token : path.split("/")){
+            
+            if(!stack.isEmpty() && "..".equals(token)){
+                stack.pop();
+            }else if(!Arrays.asList(".", "", "..").contains(token)){
+                stack.push(token);
+            }
+        }
+        return "/" + String.join("/", stack);
+    }
+}
+
+// C++ Solution
+
+class Solution {
+public:
+    string simplifyPath(string path) {
+        // initialization
+        stack<string> dirs;
+        string canonicalPath = "";
+        int n = path.length();
+
+        // iterate over the strings
+        for(int index = 0;index < n;index++){
+            if(path[index] == '/'){
+                continue;
+            }
+
+            // generate the next dir name
+            string dir_name = "";
+
+            while(index < n && path[index] != '/'){
+                dir_name += path[index];
+                index++;
+            }
+
+            if(dir_name == ".." && !dirs.empty()){
+                dirs.pop();
+            }else if(dir_name != "." && dir_name != ".." && dir_name != ""){
+                dirs.push(dir_name);
+            }
+
+        }
+        // concat the dirs
+        while(!dirs.empty()){
+            canonicalPath = '/' + dirs.top() + canonicalPath;
+            dirs.pop();
+        }
+
+        // when  the path is empty return "/"
+        return canonicalPath == "" ? "/" : canonicalPath;
+    }
+};
