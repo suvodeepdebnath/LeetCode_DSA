@@ -1,0 +1,45 @@
+class Solution {
+public:
+    int lcs(string s1, string s2){
+        // initialize the lengths
+        int n = s1.size();
+        int m = s2.size();
+        // initialize the dp array
+        int dp[n + 1][m + 1];
+        // set all the elements as zero
+        memset(dp, 0, sizeof(dp));
+        
+        // iterate over the string chars
+        for(int i = 0;i < n;i++){
+            for(int j = 0;j < m;j++){
+                // when the chars are same
+                if(s1[i] == s2[j]){
+                    dp[i + 1][j + 1] = 1 + dp[i][j];
+                }else{
+                    dp[i + 1][j + 1] = max(dp[i][j + 1], dp[i + 1][j]);
+                }
+            }
+        }
+        
+        return dp[n][m];
+    }
+    string reverse(string s){
+        // initialization
+        int left = 0, right = s.length() - 1;
+        
+        // reverse the string
+        while(left < right){
+            char temp = s[left];
+            s[left++] = s[right];
+            s[right--] = temp;
+        }
+        
+        return s;
+    }
+    
+    int longestPalindromeSubseq(string s) {
+        // longest common subsequence of s and reverse of s
+        // is the longest palindromic subsequence
+        return lcs(s, reverse(s));
+    }
+};
