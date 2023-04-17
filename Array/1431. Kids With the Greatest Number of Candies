@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<bool> kidsWithCandies(vector<int>& candies, int extraCandies) {
+        // initialization
+        vector<bool> result;
+        int maxCandy = 0;
+        // edge cases
+        if(candies.empty()){
+            return result;
+        }
+        
+        // get the max candy
+        for(int candy : candies){
+            maxCandy = max(maxCandy, candy);
+        }
+        
+        // iterate over the candies
+        for(int candy : candies){
+            if(candy + extraCandies >= maxCandy){
+                result.push_back(true);
+            }else{
+                result.push_back(false);
+            }
+        }
+        
+        return result;
+    }
+};
