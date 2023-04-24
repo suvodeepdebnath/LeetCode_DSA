@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int lastStoneWeight(vector<int>& stones) {
+        // edge cases
+        if(stones.empty()){
+            return 0;
+        }
+        
+        // initialize priority queue
+        priority_queue<int> pq;
+        
+        // insert all the stones in pq
+        for(int stone : stones){
+            pq.push(stone);
+        }
+        
+        // till there are stones in pq
+        while(pq.size() > 1){
+            int x = pq.top();
+            pq.pop();
+            int y = pq.top();
+            pq.pop();
+            
+            if(x != y){
+                pq.push(abs(x - y));
+            }
+            cout << pq.size();
+        }
+        
+        return pq.size() > 0 ? pq.top() : 0;
+        
+    }
+};
