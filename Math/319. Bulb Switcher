@@ -1,0 +1,44 @@
+// Approach 1
+class Solution {
+public:
+    int getNoOfFactors(int n){
+        int count = 0;
+        // Note that this loop runs till square root
+        for (int i=1; i<=sqrt(n); i++)
+        {
+            if (n%i == 0)
+            {
+                // If divisors are equal, print only one
+                if (n/i == i)
+                    count++;
+  
+                else // Otherwise print both
+                    count += 2;
+            }
+        }
+        return count;
+    }
+    bool isBulbOn(int i){
+        int noOfFactors = getNoOfFactors(i);
+
+        return noOfFactors % 2 == 0? false: true;
+    }
+    int bulbSwitch(int n) {
+        int total = 0;
+
+        for(int i = 1;i <= n;i++){
+            total += isBulbOn(i);
+        }
+
+        return total;
+    }
+};
+
+
+// Approach 2
+class Solution {
+public:
+    int bulbSwitch(int n) {
+        return sqrt(n);
+    }
+}
