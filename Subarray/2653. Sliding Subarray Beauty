@@ -1,0 +1,38 @@
+class Solution {
+    public int[] getSubarrayBeauty(int[] nums, int k, int x) {
+        // initialize frequency array
+        int[] freq = new int[101];
+        int n = nums.length;
+        int[] result = new int[n - k + 1];
+        
+        int leftIndex = 0;
+        int resultIndex = 0;
+        // iterate over the nums array
+        for(int index = 0;index < n;index++){
+            freq[nums[index] + 50] += 1;
+            
+            // when there are more than k integers
+            if(index >= k){
+                freq[nums[leftIndex++] + 50] -= 1;
+            }
+            
+            // for each sub array of length k
+            if(index + 1 >= k){
+                int temp_x = x;
+                
+                // get the xth smallest
+                for(int freqIndex = 0;freqIndex <= 100;freqIndex++){
+                    temp_x -= freq[freqIndex];
+                
+                    if(temp_x <= 0){
+                        // check whether the number is negative or not
+                        result[resultIndex++] = freqIndex < 50? freqIndex - 50 : 0;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        return result;
+    }
+}
