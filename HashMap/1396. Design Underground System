@@ -1,0 +1,45 @@
+class UndergroundSystem {
+    // initialize maps: id to check in station
+    // id to check in time
+    // concatenated of start and end station to travel time
+    Map<Integer, String> station;
+    Map<Integer, Integer> time;
+    Map<String, List<Integer>> mapStation;
+    
+    public UndergroundSystem() {
+        station = new HashMap();
+        time = new HashMap();
+        mapStation = new HashMap();
+    }
+    
+    public void checkIn(int id, String stationName, int t) {
+        station.put(id, stationName);
+        time.put(id, t);
+    }
+    
+    public void checkOut(int id, String stationName, int t) {
+        String start = station.get(id);
+        List<Integer> list = mapStation.getOrDefault(start + "-" + stationName, new ArrayList<Integer>());
+        
+        list.add(t - time.get(id));
+        mapStation.put(start + "-" + stationName, list);
+    }
+    
+    public double getAverageTime(String startStation, String endStation) {
+        double sum = 0;
+        List<Integer> list = mapStation.get(startStation + "-" + endStation);
+        for(int i = 0;i < list.size();i++){
+            sum += list.get(i);
+        }
+        System.out.println(sum + " "+ list.size());
+        return sum / list.size();
+    }
+}
+
+/**
+ * Your UndergroundSystem object will be instantiated and called as such:
+ * UndergroundSystem obj = new UndergroundSystem();
+ * obj.checkIn(id,stationName,t);
+ * obj.checkOut(id,stationName,t);
+ * double param_3 = obj.getAverageTime(startStation,endStation);
+ */
