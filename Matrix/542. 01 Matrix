@@ -1,0 +1,50 @@
+class Solution {
+    public int[][] updateMatrix(int[][] mat) {
+        // edge cases
+        if(mat == null || mat.length == 0){
+            return mat;
+        }
+
+        // initialization
+        int rows = mat.length;
+        int columns = mat[0].length;
+        int[][] distance = new int[rows][columns];
+        boolean[][] visited = new boolean[rows][columns];
+        int[] dirs = new int[]{0,1,0,-1,0};
+        Queue<int[]> queue = new LinkedList<>();
+
+        // add the cells into the queue having zero
+        for(int row = 0;row < rows;row++){
+            for(int col = 0;col < columns;col++){
+                if(mat[row][col] == 0){
+                    visited[row][col] = true;
+                    int[] curr = new int[]{row, col, 0};
+                    queue.offer(curr);
+                }
+            }
+        }
+
+        // visit queue
+        while(!queue.isEmpty()){
+            int[] curr = queue.poll();
+            int i = curr[0];
+            int j = curr[1];
+            int dis = curr[2];
+
+            distance[i][j] = dis;
+            // add the neighbours
+            for(int dir = 0;dir < 4;dir++){
+                int r = i + dirs[dir];
+                int c = j + dirs[dir + 1];
+
+                if(r >= 0 && r < rows && c >= 0 && c < columns && !visited[r][c]){
+                    int[] nextCurr = new int[]{r, c, dis + 1};
+                    queue.offer(nextCurr);
+                    visited[r][c] = true;
+                }
+            }
+        }
+
+        return distance;
+    }
+}
